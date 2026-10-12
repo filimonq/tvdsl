@@ -1,0 +1,5 @@
+function broken() returns r:int {
+    r = ;
+    assert ;
+    r = 3;
+}

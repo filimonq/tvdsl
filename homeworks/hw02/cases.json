@@ -1,0 +1,143 @@
+[
+  {
+    "name": "basic",
+    "file": "examples/good_basic.funny",
+    "errors": []
+  },
+  {
+    "name": "array update",
+    "file": "examples/good_arrays.funny",
+    "errors": []
+  },
+  {
+    "name": "loop and contracts",
+    "file": "examples/good_loop.funny",
+    "errors": []
+  },
+  {
+    "name": "two errors and recovery",
+    "file": "examples/bad_recovery.funny",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 2,
+        "col": 9
+      },
+      {
+        "phase": "syntax",
+        "line": 3,
+        "col": 12
+      }
+    ]
+  },
+  {
+    "name": "empty",
+    "input": "",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 1
+      }
+    ]
+  },
+  {
+    "name": "only whitespace",
+    "input": " \r\n\t",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 2,
+        "col": 2
+      }
+    ]
+  },
+  {
+    "name": "missing paren",
+    "input": "function f(x:int returns r:int { r = 1; }",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 18
+      }
+    ]
+  },
+  {
+    "name": "missing brace",
+    "input": "f() returns r:int { r=1;",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 25
+      }
+    ]
+  },
+  {
+    "name": "extra token",
+    "input": "f() returns r:int { r=1; ; }",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 26
+      }
+    ]
+  },
+  {
+    "name": "wrong assignment operator",
+    "input": "f() returns r:int { r == 1; }",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 23
+      }
+    ]
+  },
+  {
+    "name": "missing semicolon",
+    "input": "f() returns r:int { r=1 }",
+    "errors": [
+      {
+        "phase": "syntax",
+        "line": 1,
+        "col": 25
+      }
+    ]
+  },
+  {
+    "name": "leading zero",
+    "input": "f() returns r:int { r=01; }",
+    "errors": [
+      {
+        "phase": "lexical",
+        "line": 1,
+        "col": 23
+      }
+    ]
+  },
+  {
+    "name": "unknown character",
+    "input": "f() returns r:int {\n  r=@;\n}",
+    "errors": [
+      {
+        "phase": "lexical",
+        "line": 2,
+        "col": 5
+      }
+    ]
+  },
+  {
+    "name": "non ASCII comment",
+    "input": "// я",
+    "errors": [
+      {
+        "phase": "lexical",
+        "line": 1,
+        "col": 4
+      }
+    ]
+  }
+]

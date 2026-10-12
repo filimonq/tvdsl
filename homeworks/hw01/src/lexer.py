@@ -60,10 +60,11 @@ class LexError(ValueError):
         super().__init__(f"offset {offset}: {reason}")
 
 
-def tokenize(text, dfa, rules):
+def tokenize(text, dfa, rules, *, with_positions=False):
     """читаем текст и выдаём токены, каждый раз выбирая самое длинное совпадение."""
     tokens = []
     offset = 0
+    line, col, previous_cr = 1, 1, False
     while offset < len(text):
         # новый токен ищем со старта автомата, offset — начало его текста
         state, cursor, last_accept = dfa.start, offset, None
@@ -87,6 +88,21 @@ def tokenize(text, dfa, rules):
             raise LexError(offset, "leading zeros in an integer")
         if not rule.get("skip", False):
             # пробелы и комментарии потребляем, но в список токенов не добавляем
-            tokens.append({"kind": rule["name"], "lexeme": text[offset:end]})
+            token = {"kind": rule["name"], "lexeme": text[offset:end]}
+            if with_positions:
+                token.update(offset=offset, end=end, line=line, col=col)
+            tokens.append(token)
+        if with_positions:
+            # crlf — один перевод строки; отдельные cr и lf тоже поддерживаем.
+            for char in text[offset:end]:
+                if char == "\r":
+                    line, col = line + 1, 1
+                elif char == "\n":
+                    if not previous_cr:
+                        line += 1
+                    col = 1
+                else:
+                    col += 1
+                previous_cr = char == "\r"
         offset = end  # продолжаем с конца принятого фрагмента
     return tokens

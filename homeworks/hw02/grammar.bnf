@@ -1,0 +1,53 @@
+# развёрнутая версия grammar.ebnf для проверки ll(1)
+# символы справа — имена токенов hw1 или правил; пустая альтернатива — epsilon
+program -> functionDef functions EOF
+functions -> functionDef functions |
+functionDef -> functionKeyword IDENT LPAREN params RPAREN precondition RETURNS declarations postcondition locals statement
+functionKeyword -> FUNCTION |
+params -> declarations |
+precondition -> REQUIRES expression |
+postcondition -> ENSURES expression |
+locals -> USES localDeclarations |
+declarations -> declaration moreDeclarations
+moreDeclarations -> COMMA declaration moreDeclarations |
+declaration -> IDENT COLON type
+localDeclarations -> localDeclaration moreLocals
+moreLocals -> COMMA localDeclaration moreLocals |
+localDeclaration -> IDENT optionalType
+optionalType -> COLON type |
+type -> TYPE_INT arrayType
+arrayType -> LBRACKET RBRACKET |
+statement -> assignment | conditional | loop | block | assertion | assumption
+block -> LBRACE statements RBRACE
+statements -> statement statements |
+conditional -> IF LPAREN expression RPAREN block elsePart
+elsePart -> ELSE block |
+loop -> WHILE LPAREN expression RPAREN invariant block
+invariant -> INVARIANT expression |
+assertion -> ASSERT expression SEMICOLON
+assumption -> ASSUME expression SEMICOLON
+assignment -> IDENT assignmentTail
+assignmentTail -> LBRACKET expression RBRACKET ASSIGN expression SEMICOLON | ASSIGN expression SEMICOLON | COMMA IDENT moreTargets ASSIGN expression SEMICOLON
+moreTargets -> COMMA IDENT moreTargets |
+expression -> disjunction implication
+implication -> IMPLIES expression |
+disjunction -> conjunction moreOr
+moreOr -> OR conjunction moreOr |
+conjunction -> negation moreAnd
+moreAnd -> AND negation moreAnd |
+negation -> NOT negation | comparison
+comparison -> addition compareTail
+compareTail -> compareOp addition |
+compareOp -> EQ | NE | LT | LE | GT | GE
+addition -> multiplication moreAdd
+moreAdd -> PLUS multiplication moreAdd | MINUS multiplication moreAdd |
+multiplication -> unary moreMultiply
+moreMultiply -> STAR unary moreMultiply | SLASH unary moreMultiply |
+unary -> MINUS unary | primary
+primary -> INT | TRUE | FALSE | LPAREN expression RPAREN | IDENT nameTail | LENGTH arguments | quantifier
+nameTail -> arguments | LBRACKET expression RBRACKET |
+arguments -> LPAREN args RPAREN
+args -> expression moreArgs |
+moreArgs -> COMMA expression moreArgs |
+quantifier -> quantifierKeyword LPAREN declaration BAR expression RPAREN
+quantifierKeyword -> FORALL | EXISTS

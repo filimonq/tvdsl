@@ -1,0 +1,45 @@
+(* токены и ascii-алфавит взяты из hw1. ws/comment пропускаются.
+   'function' необязателен: поддерживаем и практики, и funny.ru.md.
+   {x} — повторение, [x] — необязательная часть. *)
+program       = functionDef, { functionDef }, EOF ;
+functionDef   = [ "function" ], IDENT, "(", [ declarations ], ")",
+                [ "requires", expression ], "returns", declarations,
+                [ "ensures", expression ], [ "uses", localDeclarations ], statement ;
+declarations  = declaration, { ",", declaration } ;
+declaration   = IDENT, ":", type ;
+localDeclarations = localDeclaration, { ",", localDeclaration } ;
+localDeclaration  = IDENT, [ ":", type ] ;
+type          = "int", [ "[", "]" ] ;
+
+statement     = assignment | conditional | loop | block | assertion | assumption ;
+block         = "{", { statement }, "}" ;
+conditional   = "if", "(", expression, ")", block, [ "else", block ] ;
+(* тела if/else/while обязательно заключены в блоки: конфликт else устранён. *)
+loop          = "while", "(", expression, ")", [ "invariant", expression ], block ;
+assertion     = "assert", expression, ";" ;
+assumption    = "assume", expression, ";" ;
+assignment    = IDENT, assignmentTail ;
+assignmentTail = "[", expression, "]", "=", expression, ";"
+               | "=", expression, ";"
+               | ",", IDENT, { ",", IDENT }, "=", expression, ";" ;
+(* после разбора проверяется, что expression в множественном присваивании — call. *)
+
+expression    = disjunction, [ "->", expression ] ;
+disjunction   = conjunction, { "or", conjunction } ;
+conjunction   = negation, { "and", negation } ;
+negation      = "not", negation | comparison ;
+comparison    = addition, [ compareOp, addition ] ;
+compareOp     = "==" | "!=" | "<" | "<=" | ">" | ">=" ;
+addition      = multiplication, { ("+" | "-"), multiplication } ;
+multiplication = unary, { ("*" | "/"), unary } ;
+unary         = "-", unary | primary ;
+primary       = INT | "true" | "false" | "(", expression, ")"
+              | IDENT, nameTail | "length", arguments | quantifier ;
+nameTail      = arguments | "[", expression, "]" | EMPTY ;
+(* empty обозначает пустую последовательность токенов. *)
+arguments     = "(", [ expression, { ",", expression } ], ")" ;
+quantifier    = ("forall" | "exists"), "(", declaration, "|", expression, ")" ;
+
+(* арифметические и булевы выражения объединены. совместимость типов
+   проверяется в hw3. цепочки сравнений a<b<c синтаксически запрещены.
+   определения формул и многомерные массивы не входят в подмножество hw2. *)

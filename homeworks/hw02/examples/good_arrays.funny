@@ -1,0 +1,5 @@
+setfirst(a:int[]) requires length(a) > 0 returns b:int[]
+ensures b[0] == 42 {
+    b = a;
+    b[0] = 42;
+}
