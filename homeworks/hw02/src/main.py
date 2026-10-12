@@ -17,6 +17,8 @@ def main():
         source = command.add_mutually_exclusive_group(required=True)
         source.add_argument("--text")
         source.add_argument("--file", type=Path)
+        command.add_argument("--json", action="store_true",
+                             help="вывести полный JSON, включая ошибки и частичный AST")
     commands.add_parser("test")
     args = cli.parse_args()
     if args.command == "test":
@@ -38,7 +40,15 @@ def main():
             except LexError as error:
                 result = {"tokens": [], "errors": [{"phase": "lexical", "message": str(error),
                                                     "pos": position(text, error.offset)}]}
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        if result["errors"] and not args.json:
+            source_name = str(args.file) if args.file else "<text>"
+            for error in result["errors"]:
+                pos = error["pos"]
+                phase = "синтаксическая" if error["phase"] == "syntax" else "лексическая"
+                print(f"{source_name}:{pos['line']}:{pos['col']}: "
+                      f"{phase} ошибка: {error['message']}", file=sys.stderr)
+        else:
+            print(json.dumps(result, ensure_ascii=False, indent=2))
         return 1 if result["errors"] else 0
     except (OSError, ValueError, KeyError, TypeError, RecursionError) as error:
         print(f"Error: {error}", file=sys.stderr)

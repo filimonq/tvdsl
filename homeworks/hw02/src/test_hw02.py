@@ -270,10 +270,32 @@ class HW02Tests(unittest.TestCase):
             result = subprocess.run(command + ["--text", text], cwd="/tmp", capture_output=True,
                                     text=True, timeout=5)
             self.assertEqual(result.returncode, code, result.stderr)
-            self.assertIn("ast", json.loads(result.stdout))
+            if code == 0:
+                self.assertIn("ast", json.loads(result.stdout))
+                self.assertEqual(result.stderr, "")
+            else:
+                self.assertEqual(result.stdout, "")
+                self.assertIn("<text>:1:1:", result.stderr)
+                self.assertIn("ошибка:", result.stderr)
+            structured = subprocess.run(command + ["--json", "--text", text], cwd="/tmp",
+                                        capture_output=True, text=True, timeout=5)
+            self.assertEqual(structured.returncode, code)
+            self.assertEqual(structured.stderr, "")
+            self.assertEqual(bool(json.loads(structured.stdout)["errors"]), code == 1)
         result = subprocess.run(command + ["--file", str(HERE / "examples/good_arrays.funny")],
                                 cwd="/tmp", capture_output=True, text=True, timeout=5)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_cli_bad_file_messages(self):
+        path = HERE / "examples/bad_recovery.funny"
+        result = subprocess.run([sys.executable, "-B", str(HERE / "src/main.py"), "parse",
+                                 "--file", str(path)], capture_output=True, text=True, timeout=5)
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, "")
+        self.assertEqual(result.stderr.splitlines(), [
+            f"{path}:2:9: синтаксическая ошибка: Ожидалось выражение; получено ';'",
+            f"{path}:3:12: синтаксическая ошибка: Ожидалось выражение; получено ';'",
+        ])
 
     def test_cli_preserves_crlf_offsets(self):
         import tempfile
@@ -282,7 +304,7 @@ class HW02Tests(unittest.TestCase):
             path = Path(directory) / "crlf.funny"
             path.write_bytes(text.encode("ascii"))
             result = subprocess.run([sys.executable, "-B", str(HERE / "src/main.py"),
-                                     "parse", "--file", str(path)], capture_output=True,
+                                     "parse", "--json", "--file", str(path)], capture_output=True,
                                     text=True, timeout=5)
         self.assertEqual(result.returncode, 1)
         error = json.loads(result.stdout)["errors"][0]
