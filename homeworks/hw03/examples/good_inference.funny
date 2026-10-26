@@ -1,0 +1,6 @@
+function copy_first(a:int[]) returns r:int uses b, first {
+    b = a;
+    b[0] = 42;
+    first = b[0];
+    r = first + length(b);
+}

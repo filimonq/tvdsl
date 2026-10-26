@@ -1,0 +1,17 @@
+function main(a:int[]) returns r:int uses n, b {
+    n, b = pair(a);
+    r = factorial(n) + length(b);
+}
+
+function pair(a:int[]) returns n:int, b:int[] {
+    n = length(a);
+    b = a;
+}
+
+function factorial(n:int) returns r:int {
+    if (n <= 1) {
+        r = 1;
+    } else {
+        r = n * factorial(n - 1);
+    }
+}

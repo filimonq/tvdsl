@@ -1,0 +1,8 @@
+function bad(a:int[]) returns r:int uses tmp {
+    missing = 1;
+    a[0] = 2;
+    r = a + 1;
+    r = length(1, 2);
+    if (r) { r = 0; }
+    tmp = true;
+}

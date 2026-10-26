@@ -1,0 +1,14 @@
+function increment(n:int)
+requires n >= 0
+returns r:int
+ensures r > n
+uses i {
+    i = 0;
+    r = n;
+    while (i < 1) invariant i >= 0 and r >= n {
+        r = r + 1;
+        i = i + 1;
+    }
+    assert forall(k:int | k < n -> k < r);
+    assume r > 0;
+}
