@@ -1,0 +1,160 @@
+{
+  "format": "funny-ir-v1",
+  "functions": [
+    {
+      "name": "main",
+      "params": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 5,
+            "line": 1,
+            "col": 6
+          },
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 12,
+            "line": 1,
+            "col": 13
+          },
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "returns": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 27,
+            "line": 1,
+            "col": 28
+          },
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "types": {
+        "a": "int",
+        "b": "int",
+        "r": "int",
+        "x": "int",
+        "y": "int",
+        "dead": "int",
+        "c": "int",
+        "%t0": "int",
+        "%t1": "int",
+        "%t2": "int",
+        "%t3": "int",
+        "%t4": "int",
+        "%t5": "int",
+        "%t6": "int"
+      },
+      "code": [
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L0"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t2"
+          ],
+          "args": [
+            {
+              "ref": "a"
+            },
+            {
+              "ref": "b"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "x"
+          ],
+          "args": [
+            {
+              "ref": "%t2"
+            }
+          ]
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "%t3"
+          ],
+          "args": [
+            {
+              "ref": "%t2"
+            }
+          ]
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "y"
+          ],
+          "args": [
+            {
+              "ref": "%t3"
+            }
+          ]
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t4"
+          ],
+          "args": [
+            {
+              "ref": "x"
+            },
+            {
+              "ref": "y"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "%t6"
+          ],
+          "args": [
+            {
+              "ref": "%t4"
+            }
+          ]
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "r"
+          ],
+          "args": [
+            {
+              "ref": "%t6"
+            }
+          ]
+        },
+        {
+          "op": "return",
+          "dest": [],
+          "args": [
+            {
+              "ref": "r"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+adjust(a:int[]) returns b:int[], n:int {
+    b = a;
+    b[0] = b[0] + 1;
+    n = length(b);
+}
+main(a:int[]) returns r:int uses b:int[], n:int {
+    b, n = adjust(a);
+    r = a[0] + b[0] + n;
+}

@@ -1,0 +1,235 @@
+{
+  "format": "funny-ir-v1",
+  "functions": [
+    {
+      "name": "main",
+      "params": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 5,
+            "line": 1,
+            "col": 6
+          },
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 12,
+            "line": 1,
+            "col": 13
+          },
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "returns": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 27,
+            "line": 1,
+            "col": 28
+          },
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "types": {
+        "a": "int",
+        "b": "int",
+        "r": "int",
+        "x": "int",
+        "y": "int",
+        "dead": "int",
+        "c": "int",
+        "%t0": "int",
+        "%t1": "int",
+        "%t2": "int",
+        "%t3": "int",
+        "%t4": "int",
+        "%t5": "int",
+        "%t6": "int"
+      },
+      "code": [
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L0"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t0"
+          ],
+          "args": [
+            {
+              "const": 2
+            },
+            {
+              "const": 3
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "c"
+          ],
+          "args": [
+            {
+              "ref": "%t0"
+            }
+          ]
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t1"
+          ],
+          "args": [
+            {
+              "ref": "c"
+            },
+            {
+              "const": 9
+            }
+          ],
+          "operator": "*"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "dead"
+          ],
+          "args": [
+            {
+              "ref": "%t1"
+            }
+          ]
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t2"
+          ],
+          "args": [
+            {
+              "ref": "a"
+            },
+            {
+              "ref": "b"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "x"
+          ],
+          "args": [
+            {
+              "ref": "%t2"
+            }
+          ]
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t3"
+          ],
+          "args": [
+            {
+              "ref": "a"
+            },
+            {
+              "ref": "b"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "y"
+          ],
+          "args": [
+            {
+              "ref": "%t3"
+            }
+          ]
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t4"
+          ],
+          "args": [
+            {
+              "ref": "x"
+            },
+            {
+              "ref": "y"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t5"
+          ],
+          "args": [
+            {
+              "ref": "c"
+            },
+            {
+              "const": 0
+            }
+          ],
+          "operator": "*"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t6"
+          ],
+          "args": [
+            {
+              "ref": "%t4"
+            },
+            {
+              "ref": "%t5"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "r"
+          ],
+          "args": [
+            {
+              "ref": "%t6"
+            }
+          ]
+        },
+        {
+          "op": "return",
+          "dest": [],
+          "args": [
+            {
+              "ref": "r"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

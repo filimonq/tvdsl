@@ -1,0 +1,25 @@
+function main(n:int) returns r:int:
+L0:
+  r = 0
+  i = 0
+  jump L1
+L1:
+  %t0 = i < n
+  branch %t0 ? L2 : L3
+L2:
+  %t1 = i < 3
+  branch %t1 ? L4 : L5
+L4:
+  %t2 = r + i
+  r = %t2
+  jump L6
+L5:
+  %t3 = r + 2
+  r = %t3
+  jump L6
+L6:
+  %t4 = i + 1
+  i = %t4
+  jump L1
+L3:
+  return r

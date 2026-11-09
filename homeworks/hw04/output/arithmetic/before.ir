@@ -1,0 +1,15 @@
+function main(a:int, b:int) returns r:int:
+L0:
+  %t0 = 2 + 3
+  c = %t0
+  %t1 = c * 9
+  dead = %t1
+  %t2 = a + b
+  x = %t2
+  %t3 = a + b
+  y = %t3
+  %t4 = x + y
+  %t5 = c * 0
+  %t6 = %t4 + %t5
+  r = %t6
+  return r

@@ -1,0 +1,10 @@
+function main(a:int, b:int) returns r:int:
+L0:
+  %t2 = a + b
+  x = %t2
+  %t3 = %t2
+  y = %t3
+  %t4 = x + y
+  %t6 = %t4
+  r = %t6
+  return r

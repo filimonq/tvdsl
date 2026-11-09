@@ -1,0 +1,271 @@
+{
+  "format": "funny-ir-v1",
+  "functions": [
+    {
+      "name": "main",
+      "params": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 5,
+            "line": 1,
+            "col": 6
+          },
+          "name": "n",
+          "type": "int"
+        }
+      ],
+      "returns": [
+        {
+          "kind": "VarDecl",
+          "pos": {
+            "offset": 20,
+            "line": 1,
+            "col": 21
+          },
+          "name": "r",
+          "type": "int"
+        }
+      ],
+      "types": {
+        "n": "int",
+        "r": "int",
+        "i": "int",
+        "%t0": "bool",
+        "%t1": "bool",
+        "%t2": "int",
+        "%t3": "int",
+        "%t4": "int"
+      },
+      "code": [
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L0"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "r"
+          ],
+          "args": [
+            {
+              "const": 0
+            }
+          ]
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "i"
+          ],
+          "args": [
+            {
+              "const": 0
+            }
+          ]
+        },
+        {
+          "op": "jump",
+          "dest": [],
+          "args": [],
+          "target": "L1"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L1"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t0"
+          ],
+          "args": [
+            {
+              "ref": "i"
+            },
+            {
+              "ref": "n"
+            }
+          ],
+          "operator": "<"
+        },
+        {
+          "op": "branch",
+          "dest": [],
+          "args": [
+            {
+              "ref": "%t0"
+            }
+          ],
+          "true": "L2",
+          "false": "L3"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L2"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t1"
+          ],
+          "args": [
+            {
+              "ref": "i"
+            },
+            {
+              "const": 3
+            }
+          ],
+          "operator": "<"
+        },
+        {
+          "op": "branch",
+          "dest": [],
+          "args": [
+            {
+              "ref": "%t1"
+            }
+          ],
+          "true": "L4",
+          "false": "L5"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L4"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t2"
+          ],
+          "args": [
+            {
+              "ref": "r"
+            },
+            {
+              "ref": "i"
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "r"
+          ],
+          "args": [
+            {
+              "ref": "%t2"
+            }
+          ]
+        },
+        {
+          "op": "jump",
+          "dest": [],
+          "args": [],
+          "target": "L6"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L5"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t3"
+          ],
+          "args": [
+            {
+              "ref": "r"
+            },
+            {
+              "const": 2
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "r"
+          ],
+          "args": [
+            {
+              "ref": "%t3"
+            }
+          ]
+        },
+        {
+          "op": "jump",
+          "dest": [],
+          "args": [],
+          "target": "L6"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L6"
+        },
+        {
+          "op": "binary",
+          "dest": [
+            "%t4"
+          ],
+          "args": [
+            {
+              "ref": "i"
+            },
+            {
+              "const": 1
+            }
+          ],
+          "operator": "+"
+        },
+        {
+          "op": "copy",
+          "dest": [
+            "i"
+          ],
+          "args": [
+            {
+              "ref": "%t4"
+            }
+          ]
+        },
+        {
+          "op": "jump",
+          "dest": [],
+          "args": [],
+          "target": "L1"
+        },
+        {
+          "op": "label",
+          "dest": [],
+          "args": [],
+          "label": "L3"
+        },
+        {
+          "op": "return",
+          "dest": [],
+          "args": [
+            {
+              "ref": "r"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

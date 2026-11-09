@@ -1,0 +1,11 @@
+main(a:int[]) requires length(a) > 0
+returns r:int ensures r == a[0]
+uses i:int {
+    i = 0;
+    while (i < 0) invariant forall(j:int | j == j) {
+        i = i + 1;
+    }
+    assume length(a) > 0;
+    r = a[0];
+    assert r == a[0];
+}

@@ -1,0 +1,3 @@
+digraph cfg {
+  B0 [shape=box,label="L0:\n  %t2 = a + b\n  x = %t2\n  %t3 = %t2\n  y = %t3\n  %t4 = x + y\n  %t6 = %t4\n  r = %t6\n  return r"];
+}

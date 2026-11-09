@@ -1,0 +1,12 @@
+main(n:int) returns r:int uses i {
+    r = 0;
+    i = 0;
+    while (i < n) {
+        if (i < 3) {
+            r = r + i;
+        } else {
+            r = r + 2;
+        }
+        i = i + 1;
+    }
+}

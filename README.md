@@ -3,3 +3,4 @@
 - [HW01: регулярные выражения → НКА → ДКА → минимизация](homeworks/hw01/README.md)
 - [HW02: парсер Funny, AST и диагностика](homeworks/hw02/README.md)
 - [HW03: семантические проверки, типы и вывод типов локальных](homeworks/hw03/README.md)
+- [HW04: промежуточный код, CFG, оптимизации и раскраска](homeworks/hw04/README.md)

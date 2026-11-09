@@ -1,0 +1,7 @@
+main(a:int, b:int) returns r:int uses x, y, dead, c {
+    c = 2 + 3;
+    dead = c * 9;
+    x = a + b;
+    y = a + b;
+    r = (x + y) + c * 0;
+}

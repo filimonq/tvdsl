@@ -1,0 +1,468 @@
+{
+  "before": {
+    "main": {
+      "blocks": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 4,
+          "labels": [
+            "L0"
+          ],
+          "successors": [
+            1
+          ],
+          "predecessors": [],
+          "use": [],
+          "defs": [
+            "i",
+            "r"
+          ],
+          "live_in": [
+            "n"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 1,
+          "start": 4,
+          "end": 7,
+          "labels": [
+            "L1"
+          ],
+          "successors": [
+            2,
+            6
+          ],
+          "predecessors": [
+            0,
+            5
+          ],
+          "use": [
+            "i",
+            "n"
+          ],
+          "defs": [
+            "%t0"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 2,
+          "start": 7,
+          "end": 10,
+          "labels": [
+            "L2"
+          ],
+          "successors": [
+            3,
+            4
+          ],
+          "predecessors": [
+            1
+          ],
+          "use": [
+            "i"
+          ],
+          "defs": [
+            "%t1"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 3,
+          "start": 10,
+          "end": 14,
+          "labels": [
+            "L4"
+          ],
+          "successors": [
+            5
+          ],
+          "predecessors": [
+            2
+          ],
+          "use": [
+            "i",
+            "r"
+          ],
+          "defs": [
+            "%t2",
+            "r"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 4,
+          "start": 14,
+          "end": 18,
+          "labels": [
+            "L5"
+          ],
+          "successors": [
+            5
+          ],
+          "predecessors": [
+            2
+          ],
+          "use": [
+            "r"
+          ],
+          "defs": [
+            "%t3",
+            "r"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 5,
+          "start": 18,
+          "end": 22,
+          "labels": [
+            "L6"
+          ],
+          "successors": [
+            1
+          ],
+          "predecessors": [
+            3,
+            4
+          ],
+          "use": [
+            "i"
+          ],
+          "defs": [
+            "%t4",
+            "i"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 6,
+          "start": 22,
+          "end": 24,
+          "labels": [
+            "L3"
+          ],
+          "successors": [],
+          "predecessors": [
+            1
+          ],
+          "use": [
+            "r"
+          ],
+          "defs": [],
+          "live_in": [
+            "r"
+          ],
+          "live_out": []
+        }
+      ],
+      "interference": {
+        "edges": {
+          "%t0": [],
+          "%t1": [],
+          "%t2": [],
+          "%t3": [],
+          "%t4": []
+        },
+        "colors": {
+          "%t0": 0,
+          "%t1": 0,
+          "%t2": 0,
+          "%t3": 0,
+          "%t4": 0
+        },
+        "color_count": 1
+      },
+      "metrics": {
+        "instructions": 17,
+        "temporaries": 5,
+        "blocks": 7,
+        "colors": 1
+      }
+    }
+  },
+  "after": {
+    "main": {
+      "blocks": [
+        {
+          "id": 0,
+          "start": 0,
+          "end": 4,
+          "labels": [
+            "L0"
+          ],
+          "successors": [
+            1
+          ],
+          "predecessors": [],
+          "use": [],
+          "defs": [
+            "i",
+            "r"
+          ],
+          "live_in": [
+            "n"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 1,
+          "start": 4,
+          "end": 7,
+          "labels": [
+            "L1"
+          ],
+          "successors": [
+            2,
+            6
+          ],
+          "predecessors": [
+            0,
+            5
+          ],
+          "use": [
+            "i",
+            "n"
+          ],
+          "defs": [
+            "%t0"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 2,
+          "start": 7,
+          "end": 10,
+          "labels": [
+            "L2"
+          ],
+          "successors": [
+            3,
+            4
+          ],
+          "predecessors": [
+            1
+          ],
+          "use": [
+            "i"
+          ],
+          "defs": [
+            "%t1"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 3,
+          "start": 10,
+          "end": 14,
+          "labels": [
+            "L4"
+          ],
+          "successors": [
+            5
+          ],
+          "predecessors": [
+            2
+          ],
+          "use": [
+            "i",
+            "r"
+          ],
+          "defs": [
+            "%t2",
+            "r"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 4,
+          "start": 14,
+          "end": 18,
+          "labels": [
+            "L5"
+          ],
+          "successors": [
+            5
+          ],
+          "predecessors": [
+            2
+          ],
+          "use": [
+            "r"
+          ],
+          "defs": [
+            "%t3",
+            "r"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 5,
+          "start": 18,
+          "end": 22,
+          "labels": [
+            "L6"
+          ],
+          "successors": [
+            1
+          ],
+          "predecessors": [
+            3,
+            4
+          ],
+          "use": [
+            "i"
+          ],
+          "defs": [
+            "%t4",
+            "i"
+          ],
+          "live_in": [
+            "i",
+            "n",
+            "r"
+          ],
+          "live_out": [
+            "i",
+            "n",
+            "r"
+          ]
+        },
+        {
+          "id": 6,
+          "start": 22,
+          "end": 24,
+          "labels": [
+            "L3"
+          ],
+          "successors": [],
+          "predecessors": [
+            1
+          ],
+          "use": [
+            "r"
+          ],
+          "defs": [],
+          "live_in": [
+            "r"
+          ],
+          "live_out": []
+        }
+      ],
+      "interference": {
+        "edges": {
+          "%t0": [],
+          "%t1": [],
+          "%t2": [],
+          "%t3": [],
+          "%t4": []
+        },
+        "colors": {
+          "%t0": 0,
+          "%t1": 0,
+          "%t2": 0,
+          "%t3": 0,
+          "%t4": 0
+        },
+        "color_count": 1
+      },
+      "metrics": {
+        "instructions": 17,
+        "temporaries": 5,
+        "blocks": 7,
+        "colors": 1
+      }
+    }
+  }
+}

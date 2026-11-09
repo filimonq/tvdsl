@@ -1,0 +1,4 @@
+main(a:int) returns r:int {
+    a = 1;
+    r = missing + true;
+}

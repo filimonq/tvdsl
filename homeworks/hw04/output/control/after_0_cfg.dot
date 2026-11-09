@@ -1,0 +1,17 @@
+digraph cfg {
+  B0 [shape=box,label="L0:\n  r = 0\n  i = 0\n  jump L1"];
+  B0 -> B1;
+  B1 [shape=box,label="L1:\n  %t0 = i < n\n  branch %t0 ? L2 : L3"];
+  B1 -> B2;
+  B1 -> B6;
+  B2 [shape=box,label="L2:\n  %t1 = i < 3\n  branch %t1 ? L4 : L5"];
+  B2 -> B3;
+  B2 -> B4;
+  B3 [shape=box,label="L4:\n  %t2 = r + i\n  r = %t2\n  jump L6"];
+  B3 -> B5;
+  B4 [shape=box,label="L5:\n  %t3 = r + 2\n  r = %t3\n  jump L6"];
+  B4 -> B5;
+  B5 [shape=box,label="L6:\n  %t4 = i + 1\n  i = %t4\n  jump L1"];
+  B5 -> B1;
+  B6 [shape=box,label="L3:\n  return r"];
+}
