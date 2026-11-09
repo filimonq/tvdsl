@@ -1,10 +1,10 @@
-"""локальные константы, алгебра, cse и dce с живостью между блоками."""
+"""локальные константы и копии, алгебра, cse и dce с межблочной живостью."""
 from copy import deepcopy
 from flow import build_cfg, liveness
 from ir import constant, definitions, ref, uses
 from runtime import ExecutionError, binary, unary
 
-PASSES = ("const", "algebra", "cse", "dce")
+PASSES = ("const", "copy", "algebra", "cse", "dce")
 
 
 def copy_instruction(ins, value):
@@ -36,9 +36,12 @@ def simplify(ins):
 def local_pass(function, enabled):
     output = []
     for block in build_cfg(function):
-        constants, expressions = {}, {}
+        constants, copies, expressions = {}, {}, {}
         for original in block["instructions"]:
             ins = deepcopy(original)
+            if "copy" in enabled:
+                ins["args"] = [ref(copies.get(arg["ref"], arg["ref"])) if "ref" in arg else arg
+                               for arg in ins["args"]]
             if "const" in enabled:
                 ins["args"] = [deepcopy(constants.get(arg["ref"], arg)) if "ref" in arg else arg
                                for arg in ins["args"]]
@@ -53,6 +56,7 @@ def local_pass(function, enabled):
             if "algebra" in enabled:
                 ins = simplify(ins)
             key = None
+            expression_uses = uses(ins)
             if "cse" in enabled and ins["op"] in ("binary", "unary"):
                 key = (ins["op"], ins["operator"],
                        tuple(("ref", a["ref"]) if "ref" in a else
@@ -62,15 +66,23 @@ def local_pass(function, enabled):
             written = definitions(ins)
             for name in written:
                 constants.pop(name, None)
+            # источники копий уже подставлены до конечного имени. при записи
+            # удаляем связи как с получателем, так и с прежним источником.
+            copies = {dest: source for dest, source in copies.items()
+                      if dest not in written and source not in written}
             # запись уничтожает выражения, зависящие от старого значения имени,
             # и записи, результат которых хранился в перезаписанном месте.
             expressions = {k: value for k, value in expressions.items()
                            if value not in written and
                            not any(tag == "ref" and name in written for tag, name in k[2])}
-            if key is not None and not (uses(original) & written):
+            if key is not None and not (expression_uses & written):
                 expressions[key] = ins["dest"][0]
             if ins["op"] == "copy" and "const" in ins["args"][0]:
                 constants[ins["dest"][0]] = ins["args"][0]
+            if "copy" in enabled and ins["op"] == "copy" and "ref" in ins["args"][0]:
+                dest, source = ins["dest"][0], ins["args"][0]["ref"]
+                if dest != source:
+                    copies[dest] = source
             output.append(ins)
     function["code"] = output
 

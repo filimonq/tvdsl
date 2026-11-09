@@ -76,7 +76,7 @@ def export(directory, before, after, analyses):
 def parse_passes(value):
     names = [] if value == "none" else value.split(",")
     if any(name not in PASSES for name in names):
-        raise argparse.ArgumentTypeError("Допустимы const,algebra,cse,dce или none")
+        raise argparse.ArgumentTypeError("Допустимы " + ",".join(PASSES) + " или none")
     return names
 
 

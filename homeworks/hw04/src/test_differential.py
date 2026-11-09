@@ -168,7 +168,8 @@ class DifferentialTests(unittest.TestCase):
             return f"({condition(depth-1)} {rng.choice(['and','or','->'])} {condition(depth-1)})"
 
         inputs = [[1,2,[3]], [-3,7,[-2,8]], [2147483647,-2147483648,[0]]]
-        combinations = [passes for count in range(5) for passes in itertools.combinations(PASSES, count)]
+        combinations = [passes for count in range(len(PASSES) + 1)
+                        for passes in itertools.combinations(PASSES, count)]
         for case in range(100):
             source = ("pair(v:int) returns p:int,q:int {p=v;q=v+1;} "
                       "main(a:int,b:int,arr:int[]) returns r:int uses x:int,y:int,i:int,z:int[] {"
@@ -187,7 +188,7 @@ class DifferentialTests(unittest.TestCase):
                 for supplied, result in zip(inputs, expected):
                     with self.subTest(case=case, passes=passes, supplied=supplied):
                         self.assertEqual(execute(after, "main", supplied), result, source)
-                if len(passes) in (0, 4):
+                if len(passes) in (0, len(PASSES)):
                     stored = allocated(after)
                     for supplied, result in zip(inputs, expected):
                         self.assertEqual(execute(stored, "main", supplied), result, source)
@@ -227,15 +228,18 @@ class DifferentialTests(unittest.TestCase):
                     for name in names]
             for _ in range(20):
                 dest = rng.choice(names)
-                args = [ref(rng.choice(names)) if rng.randrange(3) else constant(rng.randrange(-2, 3))
-                        for _ in range(2)]
-                code.append({"op": "binary", "operator": rng.choice(["+", "-", "*", "/"]),
-                             "dest": [dest], "args": args})
+                if rng.randrange(4) == 0:
+                    code.append({"op": "copy", "dest": [dest], "args": [ref(rng.choice(names))]})
+                else:
+                    args = [ref(rng.choice(names)) if rng.randrange(3) else constant(rng.randrange(-2, 3))
+                            for _ in range(2)]
+                    code.append({"op": "binary", "operator": rng.choice(["+", "-", "*", "/"]),
+                                 "dest": [dest], "args": args})
             code.append({"op": "return", "dest": [], "args": [ref(name) for name in names]})
             program = {"format": "funny-ir-v1", "functions": [{"name": "main", "params": [],
                        "returns": [{"name": name, "type": "int"} for name in names],
                        "types": {name: "int" for name in names}, "code": code}]}
-            for count in range(5):
+            for count in range(len(PASSES) + 1):
                 for passes in itertools.combinations(PASSES, count):
                     with self.subTest(case=case, passes=passes):
                         self.assertTrue(compare(program, optimize(program, passes), "main")["equal"])

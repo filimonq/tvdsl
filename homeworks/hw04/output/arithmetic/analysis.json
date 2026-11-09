@@ -75,7 +75,7 @@
         {
           "id": 0,
           "start": 0,
-          "end": 9,
+          "end": 4,
           "labels": [
             "L0"
           ],
@@ -87,12 +87,7 @@
           ],
           "defs": [
             "%t2",
-            "%t3",
-            "%t4",
-            "%t6",
-            "r",
-            "x",
-            "y"
+            "%t4"
           ],
           "live_in": [
             "a",
@@ -104,21 +99,17 @@
       "interference": {
         "edges": {
           "%t2": [],
-          "%t3": [],
-          "%t4": [],
-          "%t6": []
+          "%t4": []
         },
         "colors": {
           "%t2": 0,
-          "%t3": 0,
-          "%t4": 0,
-          "%t6": 0
+          "%t4": 0
         },
         "color_count": 1
       },
       "metrics": {
-        "instructions": 8,
-        "temporaries": 4,
+        "instructions": 3,
+        "temporaries": 2,
         "blocks": 1,
         "colors": 1
       }

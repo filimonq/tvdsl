@@ -1,6 +1,4 @@
 graph interference {
   "%t2" [label="%t2: 0"];
-  "%t3" [label="%t3: 0"];
   "%t4" [label="%t4: 0"];
-  "%t6" [label="%t6: 0"];
 }

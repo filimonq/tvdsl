@@ -10,7 +10,7 @@ import tempfile
 import unittest
 
 from flow import analyze, build_cfg, interference, liveness
-from ir import compile_source, format_ir, generate
+from ir import compile_source, constant, format_ir, generate, ref
 from optimize import PASSES, optimize
 from runtime import ExecutionError, compare, execute
 from checker import check
@@ -26,7 +26,7 @@ class HW04Tests(unittest.TestCase):
 
     def verify(self, source, inputs, expected, function="main"):
         before = self.compile(source)
-        # все 16 комбинаций проверяются независимо, включая отсутствие оптимизаций.
+        # все наборы проходов проверяются независимо, включая отсутствие оптимизаций.
         for count in range(len(PASSES) + 1):
             for passes in itertools.combinations(PASSES, count):
                 after = optimize(before, passes)
@@ -180,6 +180,52 @@ class HW04Tests(unittest.TestCase):
         self.assertEqual(operators.count("+"), 1)
         self.assertEqual(execute(after, "main", [3, 4]), [49])
 
+    def test_copy_propagation_removes_redundant_copies(self):
+        before = self.compile((ROOT / "examples/arithmetic.funny").read_text())
+        after = optimize(before)
+        code = after["functions"][0]["code"]
+        self.assertFalse(any(ins["op"] == "copy" for ins in code))
+        self.assertEqual(analyze(after)["main"]["metrics"]["instructions"], 3)
+        for args, expected in (([2, 3], [10]), ([-2, 9], [14]), ([2147483647, 1], [0])):
+            self.assertEqual(execute(after, "main", args), expected)
+        without_copy = optimize(before, [name for name in PASSES if name != "copy"])
+        self.assertTrue(any(ins["dest"] == ["%t6"] for ins in without_copy["functions"][0]["code"]))
+        self.assertEqual(optimize(after), after)
+
+    def test_copy_propagation_invalidates_sources_and_targets(self):
+        sources = (
+            ("x=a;if(a==0){x=b;}y=x;z=y;x=x+1;r=y+z+x;", [[0, 2], [3, 8]], [[7], [10]]),
+            ("x=a;if(a==0){x=b;}y=x;z=y;y=y+1;r=z+y;", [[0, 2], [3, 8]], [[5], [7]]),
+            ("x=a;y=x;z=y;x=b;r=y+z+x;", [[2, 9], [-3, 5]], [[13], [-1]]),
+        )
+        for body, inputs, expected in sources:
+            self.verify("main(a:int,b:int) returns r:int uses x:int,y:int,z:int {" + body + "}",
+                        inputs, expected)
+
+    def test_copy_propagation_stays_within_block(self):
+        self.verify("main(a:int,b:int) returns r:int uses y:int {"
+                    "y=a;if(b>0){y=b;}r=y;}", [[2, 9], [2, -9]], [[9], [2]])
+
+    def test_copy_propagation_preserves_array_values(self):
+        self.verify("main(a:int[]) returns r:int uses b:int[],c:int[] {"
+                    "b=a;if(length(a)>0){b=a;}c=b;b[0]=9;r=a[0]+b[0]+c[0];}",
+                    [[[2]], [[-3]]], [[13], [3]])
+
+    def test_cse_after_copy_source_overwrite(self):
+        before = self.compile("main(a:int) returns r:int uses x:int,y:int,z:int {r=a;}")
+        # прямая запись результата операции в исходную переменную также допустима в ir.
+        before["functions"][0]["code"] = [
+            {"op": "binary", "operator": "+", "dest": ["y"], "args": [ref("a"), constant(1)]},
+            {"op": "copy", "dest": ["x"], "args": [ref("y")]},
+            {"op": "binary", "operator": "+", "dest": ["y"], "args": [ref("x"), constant(1)]},
+            {"op": "binary", "operator": "+", "dest": ["z"], "args": [ref("y"), constant(1)]},
+            {"op": "return", "dest": [], "args": [ref("z")]},
+        ]
+        for passes in (("copy", "cse"), ("copy", "cse", "dce"), PASSES):
+            after = optimize(before, passes)
+            self.assertEqual(execute(after, "main", [4]), [7])
+            self.assertEqual(optimize(after, passes), after)
+
     def test_loop_live_values_not_deleted(self):
         before = self.compile("main(n:int) returns r:int uses i:int {r=0;i=0;"
                               "while(i<n){r=r+i;i=i+1;}}")
@@ -303,6 +349,8 @@ class HW04Tests(unittest.TestCase):
                          {"result": [3]})
         self.assertIn("Совпало: 2 из 2", call("verify", "--inputs", "[[1],[3]]"))
         self.assertTrue(json.loads(call("verify", "--inputs", "[[1]]", "--format", "json"))[0]["equal"])
+        copied = json.loads(call("ir", "--passes", "copy,dce", "--format", "json"))["after"]
+        self.assertFalse(any(ins["op"] == "copy" for ins in copied["functions"][0]["code"]))
 
     def test_cli_invalid_verification_entry(self):
         base = [sys.executable, str(ROOT / "src/main.py"), "verify", "--text",

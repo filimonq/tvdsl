@@ -76,81 +76,26 @@
           "operator": "+"
         },
         {
-          "op": "copy",
-          "dest": [
-            "x"
-          ],
-          "args": [
-            {
-              "ref": "%t2"
-            }
-          ]
-        },
-        {
-          "op": "copy",
-          "dest": [
-            "%t3"
-          ],
-          "args": [
-            {
-              "ref": "%t2"
-            }
-          ]
-        },
-        {
-          "op": "copy",
-          "dest": [
-            "y"
-          ],
-          "args": [
-            {
-              "ref": "%t3"
-            }
-          ]
-        },
-        {
           "op": "binary",
           "dest": [
             "%t4"
           ],
           "args": [
             {
-              "ref": "x"
+              "ref": "%t2"
             },
             {
-              "ref": "y"
+              "ref": "%t2"
             }
           ],
           "operator": "+"
-        },
-        {
-          "op": "copy",
-          "dest": [
-            "%t6"
-          ],
-          "args": [
-            {
-              "ref": "%t4"
-            }
-          ]
-        },
-        {
-          "op": "copy",
-          "dest": [
-            "r"
-          ],
-          "args": [
-            {
-              "ref": "%t6"
-            }
-          ]
         },
         {
           "op": "return",
           "dest": [],
           "args": [
             {
-              "ref": "r"
+              "ref": "%t4"
             }
           ]
         }
